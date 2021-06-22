@@ -18,25 +18,17 @@ namespace UcakSavarOyunu
 
         private void AnaForm_KeyDown(object sender, KeyEventArgs e)
         {
-
+            //istenirse bu kısımdan yön tuşları aktif edilebilir.
             switch (e.KeyCode)
             {
-                case Keys.Enter:
-                    _oyun.Baslat();
-                    break;
-                    //case Keys.Right:
-                    //    _oyun.UcaksavariHareketEttir(Yon.Saga);
-                    //    break;
-                    //case Keys.Left:
-                    //    _oyun.UcaksavariHareketEttir(Yon.Sola);  
-                    break;
-                case Keys.Space:
+              case Keys.Space:
                     _oyun.AtesEt();
                     break;
             }
         }
 
-        private void btnCikis_Click(object sender, EventArgs e)
+    
+        private void btnCikis_Clic(object sender, MouseEventArgs e)
         {
             if (Convert.ToInt16(lblSkor.Text) < 3)
             {
@@ -55,7 +47,6 @@ namespace UcakSavarOyunu
                 }
                 
             }
-
         }
     }
 }

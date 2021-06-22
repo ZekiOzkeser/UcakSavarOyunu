@@ -13,15 +13,17 @@ namespace UcakSavar_Library.Abstract
         public int Mesafe { get; protected set; }
         public Cisim(Size alanBoyutlari)
         {
+           
             Image = Image = Image.FromFile($@"img\{GetType().Name}.png");
             AlanBoyutlari = alanBoyutlari;
             SizeMode = PictureBoxSizeMode.AutoSize;
 
         }
+       
         public new int Right
         {
             get => base.Right;
-            set => Left = value - Width;
+            set => Left = value - Width ;
         }
 
         public new int Bottom
@@ -45,7 +47,7 @@ namespace UcakSavar_Library.Abstract
         public bool HareketEt(Yon yon)
         {
             switch (yon)
-            {               
+            {
                 case Yon.Yukari:
                     return YukariHareketEttir();
                 case Yon.Saga:
@@ -59,7 +61,7 @@ namespace UcakSavar_Library.Abstract
             }
         }
 
-            
+
 
         private bool SolaHareketEttir()
         {
@@ -96,14 +98,19 @@ namespace UcakSavar_Library.Abstract
             return Right == AlanBoyutlari.Width;
         }
 
-        private bool YukariHareketEttir()       
-        {  
+        private bool YukariHareketEttir()
+        {
             if (Top == 0) return true;
 
             if (nameof(Fuze) == GetType().Name)
             {
                 int yon = ((Fuze)this).Yon;
-                Left = Right- yon;
+                if (yon < -150)
+                    yon = yon + AlanBoyutlari.Width;
+                if (Right < -1200 && yon<0)
+                    yon =(int)(yon*-1.25) ;
+
+                Left = Right - yon;
             }
             var yeniTop = Top - Mesafe;
             var tasacakMi = yeniTop < 0 || Left > AlanBoyutlari.Width;

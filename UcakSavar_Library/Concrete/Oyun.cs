@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows.Forms;
-using UcakSavar_Library.Enum;
 using UcakSavar_Library.Interface;
 
 namespace UcakSavar_Library.Concrete
@@ -10,11 +8,11 @@ namespace UcakSavar_Library.Concrete
     public class Oyun : IOyun
     {
         #region Alanlar
+
+     
         private readonly Timer _hareketTimer = new Timer { Interval = 100 };
-        private readonly Timer _ucakOlusturTimer = new Timer { Interval = 2000 };
-        private readonly Timer _atesEtTimer = new Timer { Interval =800 };
-
-
+        private readonly Timer _ucakOlusturTimer = new Timer { Interval =2000 };
+        private readonly Timer _atesEtTimer = new Timer { Interval = 800 };
         private static int Skor;
         private readonly Panel _altPanel;
         private readonly Panel _oyunPanel;
@@ -28,9 +26,6 @@ namespace UcakSavar_Library.Concrete
        
         #region Ozellikler   
         public bool DevamEdiyorMu { get; private set; }
-
-
-
         #endregion
 
         #region Metodlar
@@ -63,7 +58,6 @@ namespace UcakSavar_Library.Concrete
             for (int i = _ucaklar.Count - 1; i >= 0; i--)
             {
                 var ucak = _ucaklar[i];
-
                 var vuranFuze = ucak.VurulduMu(_fuzeler);
                 if (vuranFuze is null) continue;
 
@@ -86,7 +80,6 @@ namespace UcakSavar_Library.Concrete
 
                 _ucaklar.Remove(ucak);
                 _oyunPanel.Controls.Remove(ucak);
-
             }
 
         }
@@ -140,8 +133,14 @@ namespace UcakSavar_Library.Concrete
             if (Skor == 10)
             {
                 Bitir();
-                MessageBox.Show("Kazandınız !");
                 Skor = 0;
+                DialogResult dialog = new DialogResult();
+                dialog=MessageBox.Show("Kazandınız !\n\nTekrar Oynamak ister misiniz ?","", MessageBoxButtons.YesNo);
+                if (dialog==DialogResult.Yes)
+                    Application.Restart();
+               
+                else 
+                    Application.Exit();
             }
             return Skor.ToString();
         }
@@ -183,15 +182,7 @@ namespace UcakSavar_Library.Concrete
             ZamanlayilariDurdur();
 
         }
-
-        //public void UcaksavariHareketEttir(Yon yon)
-        //{
-        //    if (!DevamEdiyorMu) return;
-        //    _ucakSavar.HareketEt(yon);
-        //}
-
-     
-
+        
         #endregion
     }
 }
