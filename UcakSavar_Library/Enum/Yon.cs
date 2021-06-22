@@ -11,8 +11,7 @@ namespace UcakSavar_Library.Enum
         Yukari,
         Saga,
         Asagi,
-        Sola,
-        Rastgele
+        Sola        
     }
  
 }

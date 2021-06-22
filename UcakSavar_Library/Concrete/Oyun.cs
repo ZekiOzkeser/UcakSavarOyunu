@@ -106,6 +106,8 @@ namespace UcakSavar_Library.Concrete
             for (int i = _fuzeler.Count - 1; i >= 0; i--)
             {
                 var fuze = _fuzeler[i];
+                Random rnd=new Random();
+                ballHareket(5, 5, fuze);
                 var ulastiMi = fuze.HareketEt(Enum.Yon.Yukari);
                 if (ulastiMi)
                 {
@@ -186,13 +188,33 @@ namespace UcakSavar_Library.Concrete
 
         }
 
-        public void UcaksavariHareketEttir(Yon yon)
+        //public void UcaksavariHareketEttir(Yon yon)
+        //{
+        //    if (!DevamEdiyorMu) return;
+
+
+        //    _ucakSavar.HareketEt(yon);
+        //}
+
+        private void ballHareket(int yerX,int yerY,Fuze fuze)
         {
-            if (!DevamEdiyorMu) return;
+            if (_oyunPanel.Width <= fuze.Right)
+                yerX = yerX * -1;
 
+            else if (0 >= fuze.Left)
+                yerX = yerX * -1;
 
-            _ucakSavar.HareketEt(yon);
+            if (_oyunPanel.Height <= fuze.Bottom)
+                yerY = yerY * -1;
+            else if (0 >= fuze.Top)
+                yerY = yerY * -1;
+
+            else if (fuze.Bottom >= _ucakSavar.Top && fuze.Right >= _ucakSavar.Left && fuze.Left <= _ucakSavar.Right)
+                yerY = yerY * -1;
+
+            fuze.Location = new Point(fuze.Left + yerX, fuze.Top + yerY);
         }
+
         #endregion
     }
 }

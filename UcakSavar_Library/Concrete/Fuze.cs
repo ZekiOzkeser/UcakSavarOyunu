@@ -15,14 +15,17 @@ namespace UcakSavar_Library.Concrete
         public Fuze(Size alanBoyutlari,int namluX):base(alanBoyutlari)
         {
             RastgeleKonumAyarla(namluX);
-            Bottom = Random.Next(alanBoyutlari.Width - Width + 1);
-            Mesafe =(int)(Height * 1.5);
+            Mesafe = (int)(Height * 1.5);
+           
+           
         }
 
         private void RastgeleKonumAyarla(int namluX)
-        {
-           // Bottom = Random.Next(AlanBoyutlari.Width - Width + 1);
-                //AlanBoyutlari.Height;
+        {            
+            Bottom = Random.Next(AlanBoyutlari.Width - Width + 1);
+            // Left = (int)(Height * 3);
+            //Random.Next(alanBoyutlari.Height - Width + 1);
+            // Right = Random.Next(AlanBoyutlari.Width - Width + 1);
             Center = namluX;
         }
         

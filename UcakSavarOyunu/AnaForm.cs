@@ -26,6 +26,10 @@ namespace UcakSavarOyunu
 
         }
 
+        public void AnaForm_Load(object sender,EventArgs e)
+        {
+
+        }
         private void AnaForm_KeyDown(object sender, KeyEventArgs e)
         {
 
@@ -48,6 +52,8 @@ namespace UcakSavarOyunu
 
         private void Oyun_SkorDegisti(object sender, EventArgs e)
         {
+            DialogResult dr = DialogResult.None;
+            AnaForm_Load(sender, e);
             lblSkor.Text = _oyun.SkorArttir();
 
         }

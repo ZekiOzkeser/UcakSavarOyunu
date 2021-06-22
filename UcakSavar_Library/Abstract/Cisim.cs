@@ -49,9 +49,7 @@ namespace UcakSavar_Library.Abstract
         public bool HareketEt(Yon yon)
         {
             switch (yon)
-            {
-                case Yon.Rastgele:
-                    return RastgeleHareketEttir();
+            {               
                 case Yon.Yukari:
                     return YukariHareketEttir();
                 case Yon.Saga:
@@ -65,10 +63,7 @@ namespace UcakSavar_Library.Abstract
             }
         }
 
-        private bool RastgeleHareketEttir()
-        {
-            return false;
-        }
+            
 
         private bool SolaHareketEttir()
         {
