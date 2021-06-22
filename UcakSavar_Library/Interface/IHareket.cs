@@ -1,6 +1,4 @@
-﻿
-
-using System.Drawing;
+﻿using System.Drawing;
 using UcakSavar_Library.Enum;
 
 namespace UcakSavar_Library.Interface

@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using UcakSavar_Library.Enum;
 using UcakSavar_Library.Interface;
@@ -14,8 +11,8 @@ namespace UcakSavar_Library.Concrete
     {
         #region Alanlar
         private readonly Timer _hareketTimer = new Timer { Interval = 100 };
-        private readonly Timer _ucakOlusturTimer = new Timer { Interval = 4000 };
-        private readonly Timer _atesEtTimer = new Timer { Interval = 2000 };
+        private readonly Timer _ucakOlusturTimer = new Timer { Interval = 2000 };
+        private readonly Timer _atesEtTimer = new Timer { Interval =800 };
 
 
         private static int Skor;
@@ -25,11 +22,10 @@ namespace UcakSavar_Library.Concrete
         private readonly List<Fuze> _fuzeler = new List<Fuze>();
         private readonly List<Ucak> _ucaklar = new List<Ucak>();
 
-        #endregion
-        #region Olaylar
-        public event EventHandler SkorDegisti;
-        #endregion
+        private Label skor;
 
+        #endregion
+       
         #region Ozellikler   
         public bool DevamEdiyorMu { get; private set; }
 
@@ -39,13 +35,14 @@ namespace UcakSavar_Library.Concrete
 
         #region Metodlar
 
-        public Oyun(Panel altPanel, Panel oyunAlani)
+        public Oyun(Panel altPanel, Panel oyunAlani,Label lblSkor)
         {
             _altPanel = altPanel;
             _oyunPanel = oyunAlani;
             _hareketTimer.Tick += HareketTimer_Tick;
             _ucakOlusturTimer.Tick += UcakOlusturmaTimer_Tick;
             _atesEtTimer.Tick += AtesEtTimer_Tick;
+            skor = lblSkor;
         }
 
         private void AtesEtTimer_Tick(object sender, EventArgs e)
@@ -74,10 +71,9 @@ namespace UcakSavar_Library.Concrete
                 _fuzeler.Remove(vuranFuze);
                 _oyunPanel.Controls.Remove(ucak);
                 _oyunPanel.Controls.Remove(vuranFuze);
-                SkorArttir();
-
+                skor.Text = SkorArttir();
             }
-        }
+        } 
 
         private void UcaklariHareketEttir()
         {
@@ -97,19 +93,21 @@ namespace UcakSavar_Library.Concrete
 
         private void UcakOlusturmaTimer_Tick(object sender, EventArgs e)
         {
-
             UcakOlustur();
-
         }
         private void FuzeleriHareketEttir()
         {
             for (int i = _fuzeler.Count - 1; i >= 0; i--)
             {
                 var fuze = _fuzeler[i];
-                Random rnd=new Random();
-                ballHareket(5, 5, fuze);
                 var ulastiMi = fuze.HareketEt(Enum.Yon.Yukari);
                 if (ulastiMi)
+                {
+                    _fuzeler.Remove(fuze);
+                    _oyunPanel.Controls.Remove(fuze);
+                }
+
+                if (fuze.Top <=0)
                 {
                     _fuzeler.Remove(fuze);
                     _oyunPanel.Controls.Remove(fuze);
@@ -124,27 +122,28 @@ namespace UcakSavar_Library.Concrete
             var fuze = new Fuze(_oyunPanel.Size, _ucakSavar.Center);
             _fuzeler.Add(fuze);
             _oyunPanel.Controls.Add(fuze);
-
-
         }
 
         public void Baslat()
         {
             if (DevamEdiyorMu) return;
-
-
+            
             DevamEdiyorMu = true;
             ZamanlayilariBaslat();
             UcakSavarOlustur();
             UcakOlustur();
         }
 
-
         public string SkorArttir()
         {
             Skor++;
+            if (Skor == 10)
+            {
+                Bitir();
+                MessageBox.Show("Kazandınız !");
+                Skor = 0;
+            }
             return Skor.ToString();
-
         }
         private void ZamanlayilariBaslat()
         {
@@ -172,48 +171,26 @@ namespace UcakSavar_Library.Concrete
         private void UcakSavarOlustur()
         {
             _ucakSavar = new UcakSavar(_altPanel.Width, _altPanel.Size);
-
             _altPanel.Controls.Add(_ucakSavar);
-
         }
        
 
-        private void Bitir()
+        public void Bitir()
         {
             if (!DevamEdiyorMu) return;
 
             DevamEdiyorMu = false;
             ZamanlayilariDurdur();
 
-
         }
 
         //public void UcaksavariHareketEttir(Yon yon)
         //{
         //    if (!DevamEdiyorMu) return;
-
-
         //    _ucakSavar.HareketEt(yon);
         //}
 
-        private void ballHareket(int yerX,int yerY,Fuze fuze)
-        {
-            if (_oyunPanel.Width <= fuze.Right)
-                yerX = yerX * -1;
-
-            else if (0 >= fuze.Left)
-                yerX = yerX * -1;
-
-            if (_oyunPanel.Height <= fuze.Bottom)
-                yerY = yerY * -1;
-            else if (0 >= fuze.Top)
-                yerY = yerY * -1;
-
-            else if (fuze.Bottom >= _ucakSavar.Top && fuze.Right >= _ucakSavar.Left && fuze.Left <= _ucakSavar.Right)
-                yerY = yerY * -1;
-
-            fuze.Location = new Point(fuze.Left + yerX, fuze.Top + yerY);
-        }
+     
 
         #endregion
     }

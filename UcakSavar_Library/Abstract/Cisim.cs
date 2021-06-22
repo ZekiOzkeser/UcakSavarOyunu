@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using UcakSavar_Library.Concrete;
 using UcakSavar_Library.Enum;
@@ -100,12 +96,17 @@ namespace UcakSavar_Library.Abstract
             return Right == AlanBoyutlari.Width;
         }
 
-        private bool YukariHareketEttir()
-        {
+        private bool YukariHareketEttir()       
+        {  
             if (Top == 0) return true;
 
+            if (nameof(Fuze) == GetType().Name)
+            {
+                int yon = ((Fuze)this).Yon;
+                Left = Right- yon;
+            }
             var yeniTop = Top - Mesafe;
-            var tasacakMi = yeniTop < 0;
+            var tasacakMi = yeniTop < 0 || Left > AlanBoyutlari.Width;
             Top = tasacakMi ? 0 : yeniTop;
 
             return Top == 0;
